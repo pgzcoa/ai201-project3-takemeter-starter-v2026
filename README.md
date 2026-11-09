@@ -42,7 +42,7 @@
 <!-- Your community, and what your classifier sorts posts into. Three or four
      sentences. -->
 
-
+This project focuses on Reddit discussions about pizza restaurants and pizza experiences. It organizes posts into four categories: customer conflicts, delivery incidents, positive experiences, and pizza making. The goal is to train an AI model to recognize the type of experience or discussion described in each post. This will help classify pizza-related Reddit posts more consistently.
 
 ---
 
@@ -54,48 +54,94 @@
      The decision rule is worth a point on its own and it's the thing most
      people leave out. Every taxonomy has a hardest boundary. Name yours. -->
 
-### `label_one`
+     ## Milestone 2: Label Design
 
-**Definition:**
+### 1. customer_conflict
+**Definition:** A disagreement or complaint between a customer and a pizza restaurant or its employees involving service, payment, refunds, or restaurant policies.
 
-**Example 1:**
->
+**Examples:**
+- POST 165: A customer complained that a Hawaiian pizza did not have enough pineapple and became upset with the employee.
+- POST 166: A customer demanded a refund, and the disagreement escalated with the restaurant manager.
 
-**Example 2:**
->
+### 2. delivery_incident
+**Definition:** A problem involving a pizza delivery, such as a late, missing, incorrect, damaged, or improperly delivered order.
 
-### `label_two`
+**Examples:**
+- POST 169: A customer waited much longer than expected and discovered that the pizza had not even been placed in the oven.
+- POST 181: A customer received a gluten-free pizza at the wrong apartment, and it was cold when they found it.
 
-**Definition:**
+### 3. positive_experience
+**Definition:** A post describing a satisfying experience at or with a pizza restaurant, including enjoyable food, good customer service, or a successful restaurant visit.
 
-**Example 1:**
->
+**Examples:**
+- POST 150: A visitor to New York City praised Luigi's pizza and rated it 9.3 out of 10.
+- POST 153: A customer visited Professor Pizza in Chicago, enjoyed its Detroit-style pizza, and planned to return.
 
-**Example 2:**
->
+### 4. pizza_making
+**Definition:** A post discussing how to prepare, cook, improve, or experiment with homemade pizza, including dough, sauce, crust, ingredients, and baking methods.
 
-### The hardest boundary
+**Examples:**
+- POST 118: A pizza maker described preparing dough with different types of flour and allowing it to ferment for approximately 48 hours.
+- POST 126: A home cook explained how they prepared and baked homemade pizza in cast-iron pans.
 
-**Which two labels:**
+ ### 5. Borderline Post and Decision Rule
 
-**The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
+**Borderline example — POST 173:**
+
+A customer ordered a pepperoni and black olive pizza but received a pizza covered in onions instead. After difficulty getting help from customer service and the local stores, a general manager eventually apologized and offered store credit.
+
+**Possible labels:**
+- delivery_incident
+- customer_conflict
+
+**Decision rule:** 
+
+I classify a post based on its main focus.
+
+I use customer_conflict when the main focus is an argument, complaint, disagreement, or difficult interaction involving a customer and restaurant employee or delivery worker.
+
+I use delivery_incident when the main focus is a problem with the order itself or the delivery process, such as a late, missing, incorrect, damaged, or misplaced pizza.
+
+If a delivery problem leads to a disagreement, I look at what the post focuses on most. If the main issue is the delivery mistake, I use delivery_incident. If the main issue is the argument over a refund, payment, or restaurant policy, I use customer_conflict.
+
+Borderline example: POST 173
+
+A customer ordered a pepperoni and black olive pizza but received a pizza covered in onions instead. The customer had difficulty getting help from customer service and the local stores. A general manager eventually apologized and offered store credit.
+
+I classify this as delivery_incident because the main problem was receiving the wrong pizza. The customer service disagreement happened afterward.
+
+**AI Stress Test**
+
+### AI Boundary Stress Test
 
 
+| Practice Post | Expected Label |
+|---|---|
+| 1. Customer receives the wrong pizza. | `delivery_incident` |
+| 2. Customer argues with a manager about a refund. | `customer_conflict` |
+| 3. Customer gives a delivery driver a generous tip. | `positive_experience` |
+| 4. Someone shares a homemade pizza dough recipe. | `pizza_making` |
+| 5. Customer's order is marked delivered but never arrives. | `delivery_incident` |
+| 6. Customer argues with a restaurant about a double charge. | `customer_conflict` |
+| 7. Family enjoys a positive restaurant experience. | `positive_experience` |
+| 8. Beginner asks how to prevent homemade pizza crust from burning. | `pizza_making` |
 
+**What I learned:**
+
+The stress test showed that my definitions could distinguish the four categories in these examples. The most difficult boundary was between `customer_conflict` and `delivery_incident`, especially when an incorrect order led to a disagreement with restaurant employees. My decision rule helped me classify each post according to its main issue.
 ---
+
 
 ## The Dataset
 
 <!-- Where you collected from, how you labelled, your counts, and three hard
      cases. -->
 
-**Where the posts came from:**
+**Where the posts came from: I collected 200 pizza-related Reddit posts from multiple communities. These communities included r/TalesFromThePizzaGuy, r/Pizza, r/ooni, r/neapolitanpizza, r/pizzahutemployees, r/Dominos, r/chicagofood, r/FoodNYC, r/pizzahut, r/castiron, r/Breadit, r/food, r/Baking, r/MadeMeSmile, r/UberEatsDrivers, and r/TalesFromYourServer. I collected the posts by opening the original Reddit discussions and copying the available post text. I also kept the original Reddit permalink for each post in the dataset's note column so the source could be traced back to Reddit.**
 
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
-
+**How I labelled them:I manually reviewed the posts and assigned each one to one of four categories based on its main topic:1. customer_conflict – Disagreements, complaints, or difficult interactions involving customers, restaurant employees, or delivery workers. 2.delivery_incident – Problems involving pizza orders or deliveries, such as late, missing, incorrect, damaged, or misplaced orders.
+3.positive_experience – Positive experiences involving customers, restaurant employees, delivery workers, good service, generous tips, or positive restaurant reviews. 4.pizza_making – Posts about making pizza, including recipes, dough, sauces, ingredients, toppings, baking techniques, and ovens ** 
+ 
 **Counts per label:**
 
 | Label | Count | Share |
@@ -345,7 +391,7 @@ of next unit's variance. -->
 
 ---
 
-## What's Still Broken
+## What's Still Broken 
 
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
